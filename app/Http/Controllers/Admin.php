@@ -117,6 +117,7 @@ class Admin extends Controller
     {
         JenisAnggaran::create([
             'nama_anggaran' => $request->nama_anggaran,
+            'kode_anggaran' => $request->kode_anggaran,
         ]);
         return redirect()->back()->with('message', 'jenis anggaran Berhasil di tambahkan');
     }
@@ -128,6 +129,7 @@ class Admin extends Controller
         ])->first();
         $user->update([
             'nama_anggaran' => $request->nama_anggaran,
+            'kode_anggaran' => $request->kode_anggaran,
         ]);
         return redirect()->back()->with('message', 'jenis anggaran Berhasil di update');
     }

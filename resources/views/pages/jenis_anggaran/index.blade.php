@@ -21,6 +21,7 @@
                         <thead>
                             <tr>
                                 <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
+                                <td>Kode anggaran</td>
                                 <td>Nama anggaran</td>
                                 <td></td>
                             </tr>
@@ -29,6 +30,7 @@
                             @foreach ($jenis_anggaran as $row)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->kode_anggaran }}</td>
                                     <td>{{ $row->nama_anggaran }}</td>
                                     <td class="option">
                                         <div class="btn-group dropleft btn-option">
@@ -66,8 +68,12 @@
                 <form id="formPengguna" action="{{ URL::to('/admin/create_jenis_anggaran') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="nama_anggaran">Nama anggaran</label>
+                        <label for="kode_anggaran">Kode anggaran</label>
                         <input type="hidden" class="form-control" name="id" id="id">
+                        <input type="text" class="form-control" name="kode_anggaran" id="kode_anggaran">
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_anggaran">Nama anggaran</label>
                         <input type="text" class="form-control" name="nama_anggaran" id="nama_anggaran">
                     </div>
             </div>

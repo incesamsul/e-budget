@@ -15,6 +15,7 @@ class CreateJenisAnggaranTable extends Migration
     {
         Schema::create('jenis_anggaran', function (Blueprint $table) {
             $table->increments('id_jenis_anggaran');
+            $table->string('kode_anggaran');
             $table->string('nama_anggaran');
             $table->timestamps();
         });
