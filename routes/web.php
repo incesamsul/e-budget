@@ -95,6 +95,13 @@ Route::group(['middleware' => ['auth', 'ceklevel:Administrator']], function () {
         Route::get('/pengguna', [Admin::class, 'pengguna']);
         Route::get('/fetch_data', [Admin::class, 'fetchData']);
         Route::get('/jenis_anggaran', [Admin::class, 'jenisAnggaran']);
+        Route::get('/tahun_akademik', [Admin::class, 'tahunAkademik']);
+        Route::get('/aktifkan_tahun_akademik/{id_tahun_akademik}', [Admin::class, 'aktifkanTahunAkademik']);
+
+        // CRUD TAHUN AJARAN
+        Route::post('/create_tahun_akademik', [Admin::class, 'createTahunAkademik']);
+        Route::post('/update_tahun_akademik', [Admin::class, 'updateTahunAkademik']);
+        Route::post('/delete_tahun_akademik', [Admin::class, 'deleteTahunAkademik']);
 
         // CRUD JENIS ANGGARAN
         Route::post('/create_jenis_anggaran', [Admin::class, 'createJenisAnggaran']);

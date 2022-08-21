@@ -6,6 +6,37 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex  justify-content-between">
+                    <h4>Anggaran tersedia</h4>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped table-hover table-user table-action-hover">
+                        <thead>
+                            <tr>
+                                <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
+                                <td>Kode anggaran</td>
+                                <td>Nama anggaran</td>
+                                <td>jumlah anggaran</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($jenis_anggaran as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->kode_anggaran }}</td>
+                                    <td>{{ $row->nama_anggaran }}</td>
+                                    <td>{{ $row->jumlah_anggaran }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex  justify-content-between">
                     <h4>Pengajuan</h4>
                     <div class="table-tools d-flex justify-content-around ">
                         <input type="text" class="form-control card-form-header mr-3" placeholder="Cari Data Pengguna ..." id="cari-data-pengguna">
@@ -24,7 +55,7 @@
                                 <td>jenis anggaran</td>
                                 <td>jumlah anggaran</td>
                                 <td>status</td>
-                                <td></td>
+                                <td>Aksi</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,16 +67,9 @@
                                     <td>
                                         {!! getStatus($row) !!}
                                     </td>
-                                    <td class="option">
-                                        <div class="btn-group dropleft btn-option">
-                                            <i type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </i>
-                                            <div class="dropdown-menu">
-                                                <a data-pengguna='@json($row)' data-toggle="modal" data-target="#modalPengguna" class="dropdown-item edit" href="#"><i class="fas fa-pen"> Edit</i></a>
-                                                <a data-id_hapus="{{ $row->id_jenis_anggaran }}" class="dropdown-item hapus" href="#"><i class="fas fa-trash"> Hapus</i></a>
-                                            </div>
-                                        </div>
+                                    <td>
+                                        <button data-edit='@json($row)' data-toggle="modal" data-target="#modalPengguna" class="btn btn-primary edit" href="#"><i class="fas fa-pen"> Edit</i></button>
+                                        <button data-id_hapus="{{ $row->id_pengajuan }}" class="btn btn-danger hapus" href="#"><i class="fas fa-trash"> Hapus</i></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -98,9 +122,20 @@
 <script>
     $(document).ready(function() {
 
+        $('.table-user tbody').on('click', 'tr td .edit',function(){
+            let dataEdit = $(this).data('edit');
+            $('#id').val(dataEdit.id_pengajuan);
+            $('#jumlah_anggaran').val(dataEdit.jumlah_anggaran);
+            $('#id_jenis_anggaran').val(dataEdit.id_jenis_anggaran);
+            $('#myForm').attr('action','/admin/update_pengajuan');
+        })
+
+        $('#btn-tambah').on('click',function(){
+            $('#myForm').attr('action','/admin/create_pengajuan');
+        });
 
 
-        $('.table-user tbody').on('click', 'tr td a.hapus', function() {
+        $('.table-user tbody').on('click', 'tr td .hapus', function() {
             let id_anggaran = $(this).data('id_hapus');
             Swal.fire({
                 title: 'Apakah yakin?'
@@ -140,7 +175,7 @@
 
     });
 
-    $('#liJenisAnggaran').addClass('active');
+    $('#liPengajuan').addClass('active');
 
 </script>
 @endsection

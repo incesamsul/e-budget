@@ -22,15 +22,15 @@ h3,
 h4,
 h5,
 h6 {
-    color: #c2e900 !important;
+    color: #007BFF !important;
 }
 
 .navbar-bg {
-    background-color: #c2e900 !important;
+    background-color: #007BFF !important;
 }
 
 .bg-main {
-    background-color: #c2e900;
+    background-color: #007BFF;
 }
 
 textarea {
@@ -57,7 +57,7 @@ body.show-spinner>main {
 
 .sidebar-menu li.active a {
     font-size: 14px !important;
-    color: #c2e900 !important;
+    color: #007BFF !important;
 }
 
 

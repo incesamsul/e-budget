@@ -19,6 +19,7 @@ class Pengaju extends Controller
     public function createPengajuan(Request $request)
     {
         Pengajuan::create([
+            'id_tahun_akademik' => getTahunAkademikAktif()->id_tahun_akademik,
             'id_pengaju' => auth()->user()->id,
             'id_jenis_anggaran' => $request->id_jenis_anggaran,
             'jumlah_anggaran' => $request->jumlah_anggaran,

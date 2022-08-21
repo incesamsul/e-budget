@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisAnggaran;
+use App\Models\TahunAkademik;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +34,12 @@ class Admin extends Controller
     {
         $data['jenis_anggaran'] = JenisAnggaran::all();
         return view('pages.jenis_anggaran.index', $data);
+    }
+
+    public function tahunAkademik()
+    {
+        $data['tahun_akademik'] = TahunAkademik::all();
+        return view('pages.tahun_akademik.index', $data);
     }
 
 
@@ -78,6 +85,35 @@ class Admin extends Controller
         }
     }
 
+    // CRUD TAHUN AJARAN
+
+    public function createTahunAkademik(Request $request)
+    {
+        TahunAkademik::create([
+            'nama_tahun_akademik' => $request->nama_tahun_akademik,
+        ]);
+        return redirect()->back()->with('message', 'tahun Berhasil di tambahkan');
+    }
+
+    public function updateTahunAkademik(Request $request)
+    {
+        $data = TahunAkademik::where([
+            ['id_tahun_akademik', '=', $request->id]
+        ])->first();
+        $data->update([
+            'nama_tahun_akademik' => $request->nama_tahun_akademik,
+        ]);
+        return redirect()->back()->with('message', 'tahun akademik Berhasil di update');
+    }
+
+    public function deleteTahunAkademik(Request $request)
+    {
+        $data = TahunAkademik::where([
+            ['id_tahun_akademik', '=', $request->id]
+        ])->delete();
+        return 1;
+    }
+
     // CRUD PENGGUNA
 
     public function createPengguna(Request $request)
@@ -110,12 +146,24 @@ class Admin extends Controller
         return 1;
     }
 
+    public function aktifkanTahunAkademik($idTahunAkademik)
+    {
+        TahunAkademik::query()->update(['status' => '0']);
+
+        TahunAkademik::where('id_tahun_akademik', $idTahunAkademik)->update([
+            'status' => '1'
+        ]);
+
+        return redirect()->back()->with('message', 'berhasil di aktifkan');
+    }
+
 
     // CRUD JENIS ANGGARAN
 
     public function createJenisAnggaran(Request $request)
     {
         JenisAnggaran::create([
+            'id_tahun_akademik' => getTahunAkademikAktif()->id_tahun_akademik,
             'nama_anggaran' => $request->nama_anggaran,
             'kode_anggaran' => $request->kode_anggaran,
         ]);
@@ -126,8 +174,7 @@ class Admin extends Controller
     {
         $user = JenisAnggaran::where([
             ['id_jenis_anggaran', '=', $request->id]
-        ])->first();
-        $user->update([
+        ])->update([
             'nama_anggaran' => $request->nama_anggaran,
             'kode_anggaran' => $request->kode_anggaran,
         ]);

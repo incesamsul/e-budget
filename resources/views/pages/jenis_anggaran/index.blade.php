@@ -23,7 +23,7 @@
                                 <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
                                 <td>Kode anggaran</td>
                                 <td>Nama anggaran</td>
-                                <td></td>
+                                <td>Aksi</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,17 +32,11 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->kode_anggaran }}</td>
                                     <td>{{ $row->nama_anggaran }}</td>
-                                    <td class="option">
-                                        <div class="btn-group dropleft btn-option">
-                                            <i type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </i>
-                                            <div class="dropdown-menu">
-                                                <a data-pengguna='@json($row)' data-toggle="modal" data-target="#modalPengguna" class="dropdown-item edit" href="#"><i class="fas fa-pen"> Edit</i></a>
-                                                <a data-id_hapus="{{ $row->id_jenis_anggaran }}" class="dropdown-item hapus" href="#"><i class="fas fa-trash"> Hapus</i></a>
-                                            </div>
-                                        </div>
+                                    <td>
+                                        <button data-edit='@json($row)' data-toggle="modal" data-target="#modalPengguna" class="btn btn-primary edit" href="#"><i class="fas fa-pen"> Edit</i></button>
+                                        <button data-id_hapus="{{ $row->id_jenis_anggaran }}" class="btn btn-danger hapus" href="#"><i class="fas fa-trash"> Hapus</i></button>
                                     </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>
@@ -65,7 +59,7 @@
                 </button>
             </div>
             <div class="modal-body" id="main-body">
-                <form id="formPengguna" action="{{ URL::to('/admin/create_jenis_anggaran') }}" method="POST">
+                <form id="myForm" action="{{ URL::to('/admin/create_jenis_anggaran') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="kode_anggaran">Kode anggaran</label>
@@ -75,6 +69,10 @@
                     <div class="form-group">
                         <label for="nama_anggaran">Nama anggaran</label>
                         <input type="text" class="form-control" name="nama_anggaran" id="nama_anggaran">
+                    </div>
+                    <div class="form-group">
+                        <label for="jumlah_anggaran">Jumlah anggaran</label>
+                        <input type="text" class="form-control" name="jumlah_anggaran" id="jumlah_anggaran">
                     </div>
             </div>
             <div class="modal-footer">
@@ -91,8 +89,20 @@
     $(document).ready(function() {
 
 
+        $('.table-user tbody').on('click', 'tr td .edit',function(){
+            let dataEdit = $(this).data('edit');
+            $('#id').val(dataEdit.id_jenis_anggaran);
+            $('#kode_anggaran').val(dataEdit.kode_anggaran);
+            $('#nama_anggaran').val(dataEdit.nama_anggaran);
+            $('#jumlah_anggaran').val(dataEdit.jumlah_anggaran);
+            $('#myForm').attr('action','/admin/update_jenis_anggaran');
+        })
 
-        $('.table-user tbody').on('click', 'tr td a.hapus', function() {
+        $('#btn-tambah').on('click',function(){
+            $('#myForm').attr('action','/admin/create_jenis_anggaran');
+        });
+
+        $('.table-user tbody').on('click', 'tr td .hapus', function() {
             let id_anggaran = $(this).data('id_hapus');
             Swal.fire({
                 title: 'Apakah yakin?'

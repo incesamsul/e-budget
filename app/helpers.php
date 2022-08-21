@@ -3,12 +3,19 @@
 use App\Models\FavoritModel;
 use App\Models\KategoriModel;
 use App\Models\LogAktivitasModel;
+use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use phpDocumentor\Reflection\Types\Null_;
 use PhpParser\Node\Expr\FuncCall;
 
 use function PHPUnit\Framework\isNull;
+
+
+function getTahunAkademikAktif()
+{
+    return TahunAkademik::where('status', '1')->first();
+}
 
 function getStatus($data)
 {
