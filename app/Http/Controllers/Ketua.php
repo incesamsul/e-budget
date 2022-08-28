@@ -20,6 +20,7 @@ class Ketua extends Controller
         Pengajuan::where('id_pengajuan', $request->id)->update([
             'status_verifikasi' => '2'
         ]);
+        buatLogAktivitas('menerima pengajuan');
         return 1;
     }
 
@@ -28,6 +29,7 @@ class Ketua extends Controller
         Pengajuan::where('id_pengajuan', $request->id)->update([
             'status_verifikasi' => '4'
         ]);
+        buatLogAktivitas('menolak pengajuan');
         return 1;
     }
 }

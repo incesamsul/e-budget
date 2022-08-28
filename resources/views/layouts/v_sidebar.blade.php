@@ -126,6 +126,24 @@
 
                {{-- END OF MENU BENDAHARA --}}
                @endif
+               @if (auth()->user()->role == 'yayasan')
+               {{-- MENU BENDAHARA --}}
+               <li class="nav-header">Yayasan</li>
+               <li class="nav-item">
+                <a id="liLogAktivitas" href="{{ URL::to('/yayasan/log_aktivitas') }}" class="nav-link">
+                  <i class="nav-icon fas fa-sync"></i>
+                  <p>Log Activitas</p>
+                </a>
+              </li>
+               <li class="nav-item">
+                <a id="liLaporan" href="{{ URL::to('/yayasan/laporan') }}" class="nav-link">
+                  <i class="nav-icon fas fa-list"></i>
+                  <p>Laporan</p>
+                </a>
+              </li>
+
+               {{-- END OF MENU BENDAHARA --}}
+               @endif
 
 
 

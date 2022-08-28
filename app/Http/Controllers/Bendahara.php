@@ -20,6 +20,7 @@ class Bendahara extends Controller
         Pengajuan::where('id_pengajuan', $request->id)->update([
             'status_verifikasi' => '1'
         ]);
+        buatLogAktivitas('menerima pengajuan');
         return 1;
     }
 
@@ -28,6 +29,8 @@ class Bendahara extends Controller
         Pengajuan::where('id_pengajuan', $request->id)->update([
             'status_verifikasi' => '3'
         ]);
+
+        buatLogAktivitas('menolak pengajuan');
         return 1;
     }
 }

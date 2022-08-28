@@ -91,6 +91,7 @@
                             <option>pengaju</option>
                             <option>bendahara</option>
                             <option>ketua</option>
+                            <option>yayasan</option>
                             <option>Administrator</option>
                         </select>
                     </div>

@@ -165,6 +165,7 @@ class Admin extends Controller
         JenisAnggaran::create([
             'id_tahun_akademik' => getTahunAkademikAktif()->id_tahun_akademik,
             'nama_anggaran' => $request->nama_anggaran,
+            'jumlah_anggaran' => $request->jumlah_anggaran,
             'kode_anggaran' => $request->kode_anggaran,
         ]);
         return redirect()->back()->with('message', 'jenis anggaran Berhasil di tambahkan');
@@ -176,6 +177,7 @@ class Admin extends Controller
             ['id_jenis_anggaran', '=', $request->id]
         ])->update([
             'nama_anggaran' => $request->nama_anggaran,
+            'jumlah_anggaran' => $request->jumlah_anggaran,
             'kode_anggaran' => $request->kode_anggaran,
         ]);
         return redirect()->back()->with('message', 'jenis anggaran Berhasil di update');

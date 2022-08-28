@@ -23,6 +23,7 @@
                                 <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
                                 <td>Kode anggaran</td>
                                 <td>Nama anggaran</td>
+                                <td>Jumlah anggaran</td>
                                 <td>Aksi</td>
                             </tr>
                         </thead>
@@ -32,6 +33,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->kode_anggaran }}</td>
                                     <td>{{ $row->nama_anggaran }}</td>
+                                    <td>{{ $row->jumlah_anggaran }}</td>
                                     <td>
                                         <button data-edit='@json($row)' data-toggle="modal" data-target="#modalPengguna" class="btn btn-primary edit" href="#"><i class="fas fa-pen"> Edit</i></button>
                                         <button data-id_hapus="{{ $row->id_jenis_anggaran }}" class="btn btn-danger hapus" href="#"><i class="fas fa-trash"> Hapus</i></button>

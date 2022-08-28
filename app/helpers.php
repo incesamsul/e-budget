@@ -12,6 +12,20 @@ use PhpParser\Node\Expr\FuncCall;
 use function PHPUnit\Framework\isNull;
 
 
+function buatLogAktivitas($log)
+{
+    $timezone = 'Asia/Makassar';
+    $date = new DateTime('now', new DateTimeZone($timezone));
+    $tanggal = $date->format('Y-m-d');
+    $localTime = $date->format('H:i:s');
+    return LogAktivitasModel::create([
+        'user_id' => auth()->user()->id,
+        'tgl_aktivitas' => $tanggal,
+        'jam_aktivitas' => $localTime,
+        'aktivitas' => $log
+    ]);
+}
+
 function getTahunAkademikAktif()
 {
     return TahunAkademik::where('status', '1')->first();

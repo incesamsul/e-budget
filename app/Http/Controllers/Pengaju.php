@@ -25,12 +25,15 @@ class Pengaju extends Controller
             'jumlah_anggaran' => $request->jumlah_anggaran,
         ]);
 
+        buatLogAktivitas('membuat pengajuan');
+
         return redirect()->back()->with('message', 'anggaran berhasil di ajukan');
     }
 
     public function deletePengajuan(Request $request)
     {
         Pengajuan::where('id_pengajuan', $request->id)->delete();
+        buatLogAktivitas('menghapus pengajuan');
         return 1;
     }
 }

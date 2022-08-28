@@ -10,7 +10,7 @@ use App\Http\Controllers\Pengaju;
 use App\Http\Controllers\Penilai;
 
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\Yayasan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 // GENERAL CONTROLLER ROUTE
-Route::group(['middleware' => ['auth', 'ceklevel:Administrator,pengaju,bendahara,ketua']], function () {
+Route::group(['middleware' => ['auth', 'ceklevel:Administrator,pengaju,bendahara,ketua,yayasan']], function () {
 
     Route::get('/dashboard', [General::class, 'dashboard']);
     Route::get('/profile', [General::class, 'profile']);
@@ -84,6 +84,17 @@ Route::group(['middleware' => ['auth', 'ceklevel:ketua']], function () {
         // POST REQUEST
         Route::post('/terima_pengajuan', [Ketua::class, 'terimaPengajuan']);
         Route::post('/tolak_pengajuan', [Ketua::class, 'tolakPengajuan']);
+    });
+});
+
+// YAYASAN ROUTE
+Route::group(['middleware' => ['auth', 'ceklevel:yayasan']], function () {
+    Route::group(['prefix' => 'yayasan'], function () {
+        // GET REQUEST
+        Route::get('/log_aktivitas', [Yayasan::class, 'logAktivitas']);
+        Route::get('/log_aktivitas/{tanggal}', [Yayasan::class, 'logAktivitas']);
+        Route::get('/laporan', [Yayasan::class, 'laporan']);
+        Route::get('/cetak_laporan', [Yayasan::class, 'cetakLaporan']);
     });
 });
 
