@@ -24,7 +24,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->kode_anggaran }}</td>
                                     <td>{{ $row->nama_anggaran }}</td>
-                                    <td>{{ $row->jumlah_anggaran }}</td>
+                                    <td>{{ 'Rp' . number_format($row->jumlah_anggaran) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -55,6 +55,7 @@
                                 <td>jenis anggaran</td>
                                 <td>jumlah anggaran</td>
                                 <td>status</td>
+                                <td>keterangan</td>
                                 <td>Aksi</td>
                             </tr>
                         </thead>
@@ -67,6 +68,7 @@
                                     <td>
                                         {!! getStatus($row) !!}
                                     </td>
+                                    <td>{{ $row->keterangan }}</td>
                                     <td>
                                         <button data-edit='@json($row)' data-toggle="modal" data-target="#modalPengguna" class="btn btn-primary edit" href="#"><i class="fas fa-pen"> Edit</i></button>
                                         <button data-id_hapus="{{ $row->id_pengajuan }}" class="btn btn-danger hapus" href="#"><i class="fas fa-trash"> Hapus</i></button>
@@ -93,7 +95,7 @@
                 </button>
             </div>
             <div class="modal-body" id="main-body">
-                <form id="formPengajuan" action="{{ URL::to('/pengaju/create_pengajuan') }}" method="POST">
+                <form id="myForm" action="{{ URL::to('/pengaju/create_pengajuan') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label>Jenis anggaran</label>
@@ -106,7 +108,12 @@
                     </div>
                     <div class="form-group">
                         <label for="jumlah_anggaran">Jumlah anggaran</label>
+                        <input type="hidden" class="form-control" name="id" id="id">
                         <input type="text" class="form-control" name="jumlah_anggaran" id="jumlah_anggaran">
+                    </div>
+                    <div class="form-group">
+                        <label for="keterangan">keterangan anggaran</label>
+                        <textarea class="form-control my-textarea" name="keterangan" id="keterangan"></textarea>
                     </div>
             </div>
             <div class="modal-footer">
@@ -126,12 +133,13 @@
             let dataEdit = $(this).data('edit');
             $('#id').val(dataEdit.id_pengajuan);
             $('#jumlah_anggaran').val(dataEdit.jumlah_anggaran);
+            $('#keterangan').val(dataEdit.keterangan);
             $('#id_jenis_anggaran').val(dataEdit.id_jenis_anggaran);
-            $('#myForm').attr('action','/admin/update_pengajuan');
+            $('#myForm').attr('action','/pengaju/update_pengajuan');
         })
 
         $('#btn-tambah').on('click',function(){
-            $('#myForm').attr('action','/admin/create_pengajuan');
+            $('#myForm').attr('action','/pengaju/create_pengajuan');
         });
 
 

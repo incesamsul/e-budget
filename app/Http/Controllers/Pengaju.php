@@ -23,10 +23,22 @@ class Pengaju extends Controller
             'id_pengaju' => auth()->user()->id,
             'id_jenis_anggaran' => $request->id_jenis_anggaran,
             'jumlah_anggaran' => $request->jumlah_anggaran,
+            'keterangan' => $request->keterangan,
         ]);
 
         buatLogAktivitas('membuat pengajuan');
 
+        return redirect()->back()->with('message', 'anggaran berhasil di ajukan');
+    }
+
+    public function updatePengajuan(Request $request)
+    {
+        Pengajuan::where('id_pengajuan', $request->id)->update([
+            'id_pengaju' => auth()->user()->id,
+            'id_jenis_anggaran' => $request->id_jenis_anggaran,
+            'jumlah_anggaran' => $request->jumlah_anggaran,
+            'keterangan' => $request->keterangan,
+        ]);
         return redirect()->back()->with('message', 'anggaran berhasil di ajukan');
     }
 

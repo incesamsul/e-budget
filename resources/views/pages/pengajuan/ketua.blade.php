@@ -32,7 +32,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->jenisAnggaran->nama_anggaran }}</td>
-                                    <td>{{ $row->jumlah_anggaran }}</td>
+                                    <td>{{ 'Rp. ' . number_format($row->jumlah_anggaran) }}</td>
                                     <td>
                                         {!! getStatus($row) !!}
                                     </td>
@@ -42,8 +42,8 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </i>
                                             <div class="dropdown-menu">
-                                                <a data-id="{{ $row->id_pengaju }}" class="dropdown-item terima" href="#"><i class="fas fa-check"> Terima</i></a>
-                                                <a data-id="{{ $row->id_pengaju }}" class="dropdown-item tolak" href="#"><i class="fas fa-times"> Tolak</i></a>
+                                                <a data-jumlah_anggaran="{{ $row->jumlah_anggaran }}" data-id_jenis_anggaran="{{ $row->jenisAnggaran->id_jenis_anggaran }}" data-id="{{ $row->id_pengajuan }}" class="dropdown-item terima" href="#"><i class="fas fa-check"> Terima</i></a>
+                                                <a data-id="{{ $row->id_pengajuan }}" class="dropdown-item tolak" href="#"><i class="fas fa-times"> Tolak</i></a>
                                             </div>
                                         </div>
                                     </td>
@@ -99,6 +99,9 @@
 
         $('.table-user tbody').on('click', 'tr td a.terima', function() {
             let id = $(this).data('id');
+            let idJenisAnggaran = $(this).data('id_jenis_anggaran');
+            let jumlahAnggaran = $(this).data('jumlah_anggaran');
+            console.log(idJenisAnggaran);
             Swal.fire({
                 title: 'Apakah yakin?'
                 , text: "data akan tersimpan!"
@@ -117,7 +120,9 @@
                         , method: 'post'
                         , dataType: 'json'
                         , data: {
-                            id: id
+                            id: id,
+                            id_jenis_anggaran: idJenisAnggaran,
+                            jumlah_anggaran: jumlahAnggaran
                         }
                         , success: function(data) {
                             if (data == 1) {

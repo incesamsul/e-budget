@@ -20,6 +20,12 @@ class Ketua extends Controller
         Pengajuan::where('id_pengajuan', $request->id)->update([
             'status_verifikasi' => '2'
         ]);
+
+        $jenisAnggaran = JenisAnggaran::where('id_jenis_anggaran', $request->id_jenis_anggaran);
+        $sisaAnggaran = $jenisAnggaran->first()->jumlah_anggaran - $request->jumlah_anggaran;
+        $jenisAnggaran->update([
+            'jumlah_anggaran' => $sisaAnggaran
+        ]);
         buatLogAktivitas('menerima pengajuan');
         return 1;
     }

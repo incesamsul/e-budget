@@ -19,6 +19,7 @@ class CreatePengajuanTable extends Migration
             $table->unsignedInteger('id_jenis_anggaran');
             $table->unsignedInteger('id_tahun_akademik');
             $table->integer('jumlah_anggaran');
+            $table->string('keterangan');
             $table->enum('status_verifikasi', ['0', '1', '2', '3', '4']); // 0: antrian , 1 : acc bendahara , 2 : acc ketua, 3: dcc bendahara, 4: dcc ketua
             $table->timestamps();
             $table->foreign('id_tahun_akademik')->references('id_tahun_akademik')->on('tahun_akademik')->onUpdate('cascade')->onDelete('cascade');

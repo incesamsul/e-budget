@@ -23,6 +23,7 @@
                                 <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
                                 <td>jenis anggaran</td>
                                 <td>jumlah anggaran</td>
+                                <td>Keterangan</td>
                                 <td>status</td>
                                 <td></td>
                             </tr>
@@ -32,18 +33,19 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->jenisAnggaran->nama_anggaran }}</td>
-                                    <td>{{ $row->jumlah_anggaran }}</td>
+                                    <td>{{ 'Rp. ' . number_format($row->jumlah_anggaran) }}</td>
                                     <td>
                                         {!! getStatus($row) !!}
                                     </td>
+                                    <td>{{ $row->keterangan }}</td>
                                     <td class="option">
                                         <div class="btn-group dropleft btn-option">
                                             <i type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </i>
                                             <div class="dropdown-menu">
-                                                <a data-id="{{ $row->id_pengaju }}" class="dropdown-item terima" href="#"><i class="fas fa-check"> Terima</i></a>
-                                                <a data-id="{{ $row->id_pengaju }}" class="dropdown-item tolak" href="#"><i class="fas fa-times"> Tolak</i></a>
+                                                <a data-id="{{ $row->id_pengajuan }}" class="dropdown-item terima" href="#"><i class="fas fa-check"> Terima</i></a>
+                                                <a data-id="{{ $row->id_pengajuan }}" class="dropdown-item tolak" href="#"><i class="fas fa-times"> Tolak</i></a>
                                             </div>
                                         </div>
                                     </td>
@@ -99,6 +101,7 @@
 
         $('.table-user tbody').on('click', 'tr td a.terima', function() {
             let id = $(this).data('id');
+            console.log(id);
             Swal.fire({
                 title: 'Apakah yakin?'
                 , text: "data akan tersimpan!"
