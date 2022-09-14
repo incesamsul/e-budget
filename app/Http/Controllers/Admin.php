@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisAnggaran;
+use App\Models\Pengajuan;
 use App\Models\TahunAkademik;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,6 +35,12 @@ class Admin extends Controller
     {
         $data['jenis_anggaran'] = JenisAnggaran::all();
         return view('pages.jenis_anggaran.index', $data);
+    }
+
+    public function anggaranTerpakai()
+    {
+        $data['pengajuan'] = Pengajuan::where('status_verifikasi', '2')->get();
+        return view('pages.anggaran_terpakai.index', $data);
     }
 
     public function tahunAkademik()

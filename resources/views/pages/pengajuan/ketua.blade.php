@@ -24,6 +24,9 @@
                                 <td>jenis anggaran</td>
                                 <td>jumlah anggaran</td>
                                 <td>status</td>
+                                <td>alasan bendahara</td>
+                                <td>alasan ketua</td>
+                                <td>tgl pencairan</td>
                                 <td></td>
                             </tr>
                         </thead>
@@ -36,6 +39,17 @@
                                     <td>
                                         {!! getStatus($row) !!}
                                     </td>
+                                    @if ($row->status_verifikasi == '3')
+                                        <td>{{ $row->alasan_bendahara_tolak }}</td>
+                                    @else
+                                    <td>none</td>
+                                    @endif
+                                    @if ($row->status_verifikasi == '4')
+                                        <td>{{ $row->alasan_ketua_tolak }}</td>
+                                    @else
+                                    <td>none</td>
+                                    @endif
+                                    <td>{{ $row->tgl_pencairan == null ? 'none' : $row->tgl_pencairan }}</td>
                                     <td class="option">
                                         <div class="btn-group dropleft btn-option">
                                             <i type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,6 +58,9 @@
                                             <div class="dropdown-menu">
                                                 <a data-jumlah_anggaran="{{ $row->jumlah_anggaran }}" data-id_jenis_anggaran="{{ $row->jenisAnggaran->id_jenis_anggaran }}" data-id="{{ $row->id_pengajuan }}" class="dropdown-item terima" href="#"><i class="fas fa-check"> Terima</i></a>
                                                 <a data-id="{{ $row->id_pengajuan }}" class="dropdown-item tolak" href="#"><i class="fas fa-times"> Tolak</i></a>
+                                                @if ($row->status_verifikasi == '4')
+                                                <a data-id="{{ $row->id_pengajuan }}" data-toggle="modal" data-target="#modalAlasan" class="dropdown-item alasan" href="#"><i class="fas fa-times"> Alasan Tolak</i></a>
+                                                @endif
                                             </div>
                                         </div>
                                     </td>
@@ -56,6 +73,35 @@
         </div>
     </div>
 </section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalAlasan" tabindex="-1" aria-labelledby="modalAlasanLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAlasanLabel">alasan tolak</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('/ketua/update_alasan_tolak') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="alasan">alasan</label>
+                <input type="hidden" name="id" id="id">
+                <textarea name="alasan" id="" cols="30" rows="10" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">simpan</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 <!-- Modal -->
@@ -95,7 +141,10 @@
 <script>
     $(document).ready(function() {
 
-
+        $('.table-user tbody').on('click', 'tr td a.alasan', function() {
+            let id = $(this).data('id');
+            $('#id').val(id);
+        });
 
         $('.table-user tbody').on('click', 'tr td a.terima', function() {
             let id = $(this).data('id');
@@ -176,7 +225,7 @@
 
     });
 
-    $('#liJenisAnggaran').addClass('active');
+    $('#liPengajuan').addClass('active');
 
 </script>
 @endsection

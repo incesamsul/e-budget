@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak laporan</title>
+    <title>Cetak laporan anggaran masuk</title>
     <style>
         body {
             /* color: rgba(0, 0, 0, 0.8); */
@@ -83,44 +83,38 @@
                 <P>jL. Perintis kemerdekan km 12. Kel. Kapasa, Kec Tamalanrea Makassar</P>
             </div>
         </div>
-        <h4 class="text-center">Laporan Pengajuan Anggaran</h4>
+        <h4 class="text-center">Laporan anggaran masuk</h4>
 
         <table class="full-width mt-10 mb-30" border="1" cellspacing="0" cellpadding="5">
             <thead>
                 <tr>
                     <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
-                    <td>Pengaju</td>
-                    <td>jenis anggaran</td>
+                    <td>Kode anggaran</td>
+                    <td>nama anggaran</td>
                     <td>jumlah anggaran</td>
-                    <td>tahun akademik</td>
-                    <td>tanggal pengajuan</td>
-                    <td>status</td>
                 </tr>
             </thead>
             <tbody>
                 <?php
                                 $totalAnggaran = 0;
                                 ?>
-                @foreach ($pengajuan as $row)
+                @foreach ($anggaran as $row)
                 <?php
                                 $totalAnggaran += $row->jumlah_anggaran;
                             ?>
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $row->pengaju->name }}</td>
-                        <td>{{ $row->jenisAnggaran->nama_anggaran }}</td>
-                        <td>Rp. {{ number_format($row->jumlah_anggaran) }}</td>
-                        <td>{{ $row->tahunAkademik->nama_tahun_akademik }}</td>
-                        <td>{{ $row->created_at }}</td>
-                        <td>
-                            {!! getStatus($row) !!}
-                        </td>
+                        <td>{{ $row->kode_anggaran }}</td>
+                        <td>{{ $row->nama_anggaran }}</td>
+                        <td> Rp. {{ number_format($row->jumlah_anggaran) }}</td>
                     </tr>
                 @endforeach
             </tbody>
 
         </table>
+
         <p>total : Rp.  {{ number_format($totalAnggaran) }}</p>
+
     </div>
 </body>
 </html>

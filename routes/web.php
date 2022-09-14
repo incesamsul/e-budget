@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth', 'ceklevel:bendahara']], function () {
         // POST REQUEST
         Route::post('/terima_pengajuan', [Bendahara::class, 'terimaPengajuan']);
         Route::post('/tolak_pengajuan', [Bendahara::class, 'tolakPengajuan']);
+        Route::post('/update_alasan_tolak', [Bendahara::class, 'updateAlasanTolak']);
+        Route::post('/update_tgl_pencairan', [Bendahara::class, 'updateTglPencairan']);
     });
 });
 
@@ -84,6 +86,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:ketua']], function () {
         // POST REQUEST
         Route::post('/terima_pengajuan', [Ketua::class, 'terimaPengajuan']);
         Route::post('/tolak_pengajuan', [Ketua::class, 'tolakPengajuan']);
+        Route::post('/update_alasan_tolak', [Ketua::class, 'updateAlasanTolak']);
     });
 });
 
@@ -95,17 +98,19 @@ Route::group(['middleware' => ['auth', 'ceklevel:yayasan']], function () {
         Route::get('/log_aktivitas/{tanggal}', [Yayasan::class, 'logAktivitas']);
         Route::get('/laporan', [Yayasan::class, 'laporan']);
         Route::get('/cetak_laporan', [Yayasan::class, 'cetakLaporan']);
+        Route::get('/cetak_laporan_anggaran_masuk', [Yayasan::class, 'cetakLaporanAnggaranMasuk']);
     });
 });
 
 
 // ADMIN ROUTE
-Route::group(['middleware' => ['auth', 'ceklevel:Administrator']], function () {
+Route::group(['middleware' => ['auth', 'ceklevel:Administrator,bendahara,ketua,yayasan']], function () {
     Route::group(['prefix' => 'admin'], function () {
         // GET REQUEST
         Route::get('/pengguna', [Admin::class, 'pengguna']);
         Route::get('/fetch_data', [Admin::class, 'fetchData']);
         Route::get('/jenis_anggaran', [Admin::class, 'jenisAnggaran']);
+        Route::get('/anggaran_terpakai', [Admin::class, 'anggaranTerpakai']);
         Route::get('/tahun_akademik', [Admin::class, 'tahunAkademik']);
         Route::get('/aktifkan_tahun_akademik/{id_tahun_akademik}', [Admin::class, 'aktifkanTahunAkademik']);
 

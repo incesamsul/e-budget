@@ -52,10 +52,15 @@
                         <thead>
                             <tr>
                                 <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
+                                <td>hari / tgl</td>
+                                <td>kode anggaran</td>
                                 <td>jenis anggaran</td>
                                 <td>jumlah anggaran</td>
+                                <td>alasan ditolak bendahara</td>
+                                <td>alasan ditolak ketua</td>
                                 <td>status</td>
                                 <td>keterangan</td>
+                                <td>tgl pencairan</td>
                                 <td>Aksi</td>
                             </tr>
                         </thead>
@@ -63,12 +68,17 @@
                             @foreach ($pengajuan as $row)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->created_at }}</td>
+                                    <td>{{ $row->jenisAnggaran->kode_anggaran }}</td>
                                     <td>{{ $row->jenisAnggaran->nama_anggaran }}</td>
-                                    <td>{{ $row->jumlah_anggaran }}</td>
+                                    <td> Rp. {{ number_format($row->jumlah_anggaran) }}</td>
+                                    <td>{{ $row->alasan_bendahara_tolak == null ? 'none' : $row->alasan_bendahara_tolak }}</td>
+                                    <td>{{ $row->alasan_ketua_tolak == null ? 'none' : $row->alasan_ketua_tolak }}</td>
                                     <td>
                                         {!! getStatus($row) !!}
                                     </td>
                                     <td>{{ $row->keterangan }}</td>
+                                    <td>{{ $row->tgl_pencairan == null ? 'none' : $row->tgl_pencairan }}</td>
                                     <td>
                                         <button data-edit='@json($row)' data-toggle="modal" data-target="#modalPengguna" class="btn btn-primary edit" href="#"><i class="fas fa-pen"> Edit</i></button>
                                         <button data-id_hapus="{{ $row->id_pengajuan }}" class="btn btn-danger hapus" href="#"><i class="fas fa-trash"> Hapus</i></button>

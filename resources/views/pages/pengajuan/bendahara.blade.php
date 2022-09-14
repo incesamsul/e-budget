@@ -25,6 +25,8 @@
                                 <td>jumlah anggaran</td>
                                 <td>Keterangan</td>
                                 <td>status</td>
+                                <td>alasan tolak</td>
+                                <td>tgl pencairan</td>
                                 <td></td>
                             </tr>
                         </thead>
@@ -34,10 +36,16 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->jenisAnggaran->nama_anggaran }}</td>
                                     <td>{{ 'Rp. ' . number_format($row->jumlah_anggaran) }}</td>
+                                    <td>{{ $row->keterangan == null ? 'none' : $row->keterangan }}</td>
                                     <td>
                                         {!! getStatus($row) !!}
                                     </td>
-                                    <td>{{ $row->keterangan }}</td>
+                                    @if ($row->status_verifikasi == '3')
+                                        <td>{{ $row->alasan_bendahara_tolak }}</td>
+                                    @else
+                                    <td>none</td>
+                                    @endif
+                                    <td>{{ $row->tgl_pencairan == null ? 'none' : $row->tgl_pencairan }}</td>
                                     <td class="option">
                                         <div class="btn-group dropleft btn-option">
                                             <i type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,6 +54,13 @@
                                             <div class="dropdown-menu">
                                                 <a data-id="{{ $row->id_pengajuan }}" class="dropdown-item terima" href="#"><i class="fas fa-check"> Terima</i></a>
                                                 <a data-id="{{ $row->id_pengajuan }}" class="dropdown-item tolak" href="#"><i class="fas fa-times"> Tolak</i></a>
+                                                @if ($row->status_verifikasi == '3')
+                                                <a data-id="{{ $row->id_pengajuan }}" data-toggle="modal" data-target="#modalAlasan" class="dropdown-item alasan" href="#"><i class="fas fa-times"> Alasan Tolak</i></a>
+                                                @endif
+                                                @if ($row->status_verifikasi == '2')
+                                                <a data-id="{{ $row->id_pengajuan }}" data-toggle="modal" data-target="#modalPencairan" class="dropdown-item tgl_pencairan" href="#"><i class="fas fa-times"> Set tgl pencairan</i></a>
+                                                @endif
+
                                             </div>
                                         </div>
                                     </td>
@@ -60,8 +75,67 @@
 </section>
 
 
+  <!-- Modal -->
+  <div class="modal fade" id="modalAlasan" tabindex="-1" aria-labelledby="modalAlasanLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAlasanLabel">alasan tolak</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('/bendahara/update_alasan_tolak') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="alasan">alasan</label>
+                <input type="hidden" name="id" id="id">
+                <textarea name="alasan" id="" cols="30" rows="10" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">simpan</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalPencairan" tabindex="-1" aria-labelledby="modalPencairanLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalPencairanLabel">alasan tolak</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('/bendahara/update_tgl_pencairan') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="alasan">alasan</label>
+                <input type="hidden" name="id" id="id_pengajuan">
+                <input type="date" name="tgl_pencairan" id="tgl_pencairan" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">simpan</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 <!-- Modal -->
-<div class="modal fade" id="modalPengguna" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalPengguna" tabindex="-1" aria-labelledby="modalAlasanLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -98,6 +172,17 @@
     $(document).ready(function() {
 
 
+
+        $('.table-user tbody').on('click', 'tr td a.tgl_pencairan', function() {
+            let id = $(this).data('id');
+
+            $('#id_pengajuan').val(id);
+        });
+
+        $('.table-user tbody').on('click', 'tr td a.alasan', function() {
+            let id = $(this).data('id');
+            $('#id').val(id);
+        });
 
         $('.table-user tbody').on('click', 'tr td a.terima', function() {
             let id = $(this).data('id');
@@ -174,7 +259,7 @@
 
     });
 
-    $('#liJenisAnggaran').addClass('active');
+    $('#liPengajuan').addClass('active');
 
 </script>
 @endsection

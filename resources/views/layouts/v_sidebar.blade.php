@@ -75,7 +75,13 @@
               <li class="nav-item">
                 <a id="liJenisAnggaran" href="{{ URL::to('/admin/jenis_anggaran') }}" class="nav-link">
                   <i class="nav-icon fas fa-money-check"></i>
-                  <p>Jenis Anggaran</p>
+                  <p>Anggaran masuk</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a id="liAnggaranTerpakai" href="{{ URL::to('/admin/anggaran_terpakai') }}" class="nav-link">
+                  <i class="nav-icon fas fa-money-check"></i>
+                  <p>Anggaran terpakai</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -110,6 +116,24 @@
                   <p>Pengajuan</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a id="liJenisAnggaran" href="{{ URL::to('/admin/jenis_anggaran') }}" class="nav-link">
+                  <i class="nav-icon fas fa-money-check"></i>
+                  <p>Anggaran masuk</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a id="liAnggaranTerpakai" href="{{ URL::to('/admin/anggaran_terpakai') }}" class="nav-link">
+                  <i class="nav-icon fas fa-money-check"></i>
+                  <p>Anggaran terpakai</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a id="liTahunAkademik" href="{{ URL::to('/admin/tahun_akademik') }}" class="nav-link">
+                  <i class="nav-icon fas fa-calendar"></i>
+                  <p>Tahun akademik</p>
+                </a>
+              </li>
 
                {{-- END OF MENU BENDAHARA --}}
                @endif
@@ -121,6 +145,24 @@
                 <a id="liPengajuan" href="{{ URL::to('/ketua/pengajuan') }}" class="nav-link">
                   <i class="nav-icon fas fa-money-check"></i>
                   <p>Pengajuan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a id="liJenisAnggaran" href="{{ URL::to('/admin/jenis_anggaran') }}" class="nav-link">
+                  <i class="nav-icon fas fa-money-check"></i>
+                  <p>Anggaran masuk</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a id="liAnggaranTerpakai" href="{{ URL::to('/admin/anggaran_terpakai') }}" class="nav-link">
+                  <i class="nav-icon fas fa-money-check"></i>
+                  <p>Anggaran terpakai</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a id="liTahunAkademik" href="{{ URL::to('/admin/tahun_akademik') }}" class="nav-link">
+                  <i class="nav-icon fas fa-calendar"></i>
+                  <p>Tahun akademik</p>
                 </a>
               </li>
 
@@ -135,10 +177,16 @@
                   <p>Log Activitas</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a id="liJenisAnggaran" href="{{ URL::to('/admin/jenis_anggaran') }}" class="nav-link">
+                  <i class="nav-icon fas fa-money-check"></i>
+                  <p>Laporan Anggaran masuk</p>
+                </a>
+              </li>
                <li class="nav-item">
-                <a id="liLaporan" href="{{ URL::to('/yayasan/laporan') }}" class="nav-link">
+                <a id="liLaporanAnggaranTerpakai" href="{{ URL::to('/yayasan/laporan') }}" class="nav-link">
                   <i class="nav-icon fas fa-list"></i>
-                  <p>Laporan</p>
+                  <p>Laporan Anggaran terpakai</p>
                 </a>
               </li>
 

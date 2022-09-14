@@ -48,4 +48,25 @@ class Yayasan extends Controller
         $dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
         exit(0);
     }
+    public function cetakLaporanAnggaranMasuk()
+    {
+
+        $data['anggaran'] = JenisAnggaran::all();
+        $html = view('pages.cetak.laporan_anggaran_masuk', $data);
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('Legal', 'potrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
+        exit(0);
+    }
 }

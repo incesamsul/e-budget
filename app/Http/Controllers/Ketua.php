@@ -38,4 +38,15 @@ class Ketua extends Controller
         buatLogAktivitas('menolak pengajuan');
         return 1;
     }
+
+
+    public function updateAlasanTolak(Request $request)
+    {
+        Pengajuan::where('id_pengajuan', $request->id)->update([
+            'alasan_ketua_tolak' => $request->alasan,
+        ]);
+
+        buatLogAktivitas('mengisi alasan menolak pengajuan');
+        return redirect()->back()->with('message', 'data tersimpan');
+    }
 }
