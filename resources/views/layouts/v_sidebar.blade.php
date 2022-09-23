@@ -91,6 +91,14 @@
                 </a>
               </li>
 
+              <li class="nav-item">
+                <a id="liSisaAnggaran" href="{{ URL::to('/sisa_anggaran') }}" class="nav-link">
+                  <i class="nav-icon fas fa-list"></i>
+                  <p>Sisa anggaran</p>
+                </a>
+              </li>
+
+
                {{-- END OF MENU ADMIN --}}
                @endif
 
@@ -135,6 +143,12 @@
                 </a>
               </li>
 
+              <li class="nav-item">
+                <a id="liSisaAnggaran" href="{{ URL::to('/sisa_anggaran') }}" class="nav-link">
+                  <i class="nav-icon fas fa-list"></i>
+                  <p>Sisa anggaran</p>
+                </a>
+              </li>
                {{-- END OF MENU BENDAHARA --}}
                @endif
 
@@ -165,6 +179,12 @@
                   <p>Tahun akademik</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a id="liSisaAnggaran" href="{{ URL::to('/sisa_anggaran') }}" class="nav-link">
+                  <i class="nav-icon fas fa-list"></i>
+                  <p>Sisa anggaran</p>
+                </a>
+              </li>
 
                {{-- END OF MENU BENDAHARA --}}
                @endif
@@ -190,6 +210,12 @@
                 </a>
               </li>
 
+              <li class="nav-item">
+                <a id="liSisaAnggaran" href="{{ URL::to('/sisa_anggaran') }}" class="nav-link">
+                  <i class="nav-icon fas fa-list"></i>
+                  <p>Sisa anggaran</p>
+                </a>
+              </li>
                {{-- END OF MENU BENDAHARA --}}
                @endif
 

@@ -119,7 +119,7 @@
           <form action="{{ URL::to('/bendahara/update_tgl_pencairan') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="alasan">alasan</label>
+                <label for="tgl pencairan">tgl pencairan</label>
                 <input type="hidden" name="id" id="id_pengajuan">
                 <input type="date" name="tgl_pencairan" id="tgl_pencairan" class="form-control">
             </div>

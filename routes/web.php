@@ -35,12 +35,15 @@ Route::get('/tentang_aplikasi', [Home::class, 'tentangAplikasi']);
 
 
 Route::group(['middleware' => ['guest']], function () {
+
     Route::get('/login', [LoginController::class, 'login'])->name('login');
 });
 
 // GENERAL CONTROLLER ROUTE
 Route::group(['middleware' => ['auth', 'ceklevel:Administrator,pengaju,bendahara,ketua,yayasan']], function () {
 
+    Route::get('/sisa_anggaran', [General::class, 'sisaAnggaran']);
+    Route::get('/cetak_laporan_sisa_anggaran', [General::class, 'cetakLaporansisaAnggaran']);
     Route::get('/dashboard', [General::class, 'dashboard']);
     Route::get('/profile', [General::class, 'profile']);
     Route::get('/bantuan', [General::class, 'bantuan']);

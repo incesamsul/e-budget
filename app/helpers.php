@@ -3,6 +3,7 @@
 use App\Models\FavoritModel;
 use App\Models\KategoriModel;
 use App\Models\LogAktivitasModel;
+use App\Models\Pengajuan;
 use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -11,6 +12,11 @@ use PhpParser\Node\Expr\FuncCall;
 
 use function PHPUnit\Framework\isNull;
 
+
+function getAnggaranTerpakai($idJenisAnggaran)
+{
+    return Pengajuan::where('id_jenis_anggaran', $idJenisAnggaran)->get()->sum('jumlah_anggaran');
+}
 
 function buatLogAktivitas($log)
 {

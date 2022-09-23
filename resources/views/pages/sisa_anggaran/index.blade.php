@@ -6,14 +6,17 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex  justify-content-between">
-                    <h4>Anggaran terpakai</h4>
+                    <h4>Sisa anggaran</h4>
                     <div class="table-tools d-flex justify-content-around ">
                         <input type="text" class="form-control card-form-header mr-3" placeholder="Cari Data Pengguna ..." id="cari-data-pengguna">
                         <select class="custom-select form-control mr-3" id="filter-data-pengguna">
                             <option value="" selected>Filter</option>
                             <option value=""></option>
                         </select>
-                        <button type="button" class="btn bg-main text-white float-right" data-toggle="modal" id="addUserBtn" data-target="#modalPengguna"><i class="fas fa-plus"></i></button>
+                        <a href="{{ URL::to('/cetak_laporan_sisa_anggaran') }}" type="button" class="btn bg-main text-white float-right"><i class="fas fa-print"></i></a>
+                        @if (auth()->user()->role == 'yayasan')
+                        <a href="{{ URL::to('/yayasan/cetak_laporan_anggaran_masuk') }}" type="button" class="btn bg-main text-white float-right ml-3"><i class="fas fa-print"></i></a>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -21,41 +24,40 @@
                         <thead>
                             <tr>
                                 <th width="5%" class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">ID <span id="id_icon"></span></th>
-                                <td>hari / tgl</td>
-                                <td>kode anggaran</td>
-                                <td>jenis anggaran</td>
-                                <td>nominal ajuan</td>
-                                <td>Keterangan</td>
-                                <td>status</td>
+                                <td>Nama anggaran</td>
+                                <td>Anggaran Masuk</td>
+                                <td>Anggaran Terpakai</td>
+                                <td>Sisa Anggaran </td>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                $totalNominal = 0;
+                                $totalAnggaran = 0;
+                                $totalAnggaranTerpakai = 0;
+                                $totalSisaAnggaran = 0;
                                 ?>
-                            @foreach ($pengajuan as $row)
+                            @foreach ($jenis_anggaran as $row)
                             <?php
-                            $totalNominal += $row->jumlah_anggaran;
+                                $totalAnggaran += $row->jumlah_anggaran;
+                                $anggaranTerpakai = getAnggaranTerpakai($row->id_jenis_anggaran);
+                                $totalAnggaranTerpakai += $anggaranTerpakai;
+                                $totalSisaAnggaran += ($totalAnggaran - $anggaranTerpakai);
                             ?>
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $row->created_at }}</td>
-                                    <td>{{ $row->jenisAnggaran->kode_anggaran }}</td>
-                                    <td>{{ $row->jenisAnggaran->nama_anggaran }}</td>
-                                    <td>{{ 'Rp. ' . number_format($row->jumlah_anggaran) }}</td>
-                                    <td>{{ $row->keterangan == null ? 'none' : $row->keterangan }}</td>
-                                    <td>
-                                        {!! getStatus($row) !!}
-                                    </td>
-                                    </tr>
+                                    <td>{{ $row->nama_anggaran }}</td>
+                                    <td>Rp. {{ number_format($row->jumlah_anggaran) }}</td>
+                                    <td>Rp. {{ number_format($anggaranTerpakai) }}</td>
+                                    <td>Rp. {{ number_format($row->jumlah_anggaran - $anggaranTerpakai) }}</td>
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="4">total</td>
-                                <td>Rp. {{ number_format($totalNominal) }}</td>
-                                <td></td>
-                                <td></td>
+                                <td colspan="2">total anggaran</td>
+                                <td> Rp {{ number_format($totalAnggaran) }}</td>
+                                <td> Rp {{ number_format($totalAnggaranTerpakai) }}</td>
+                                <td> Rp {{ number_format($totalSisaAnggaran) }}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -71,19 +73,22 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Tambah Pengajuan</h5>
+                <h5 class="modal-title" id="ModalLabel">Tambah anggaran</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body" id="main-body">
-                <form id="formPengajuan" action="{{ URL::to('/pengaju/create_pengajuan') }}" method="POST">
+                <form id="myForm" action="{{ URL::to('/admin/create_jenis_anggaran') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label>Jenis anggaran</label>
-                        <select class="form-control" name="id_jenis_anggaran" id="id_jenis_anggaran">
-                            <option value="">-- jenis anggaran -- </option>
-                        </select>
+                        <label for="kode_anggaran">Kode anggaran</label>
+                        <input type="hidden" class="form-control" name="id" id="id">
+                        <input type="text" class="form-control" name="kode_anggaran" id="kode_anggaran">
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_anggaran">Nama anggaran</label>
+                        <input type="text" class="form-control" name="nama_anggaran" id="nama_anggaran">
                     </div>
                     <div class="form-group">
                         <label for="jumlah_anggaran">Jumlah anggaran</label>
@@ -104,47 +109,24 @@
     $(document).ready(function() {
 
 
+        $('.table-user tbody').on('click', 'tr td .edit',function(){
+            let dataEdit = $(this).data('edit');
+            $('#id').val(dataEdit.id_jenis_anggaran);
+            $('#kode_anggaran').val(dataEdit.kode_anggaran);
+            $('#nama_anggaran').val(dataEdit.nama_anggaran);
+            $('#jumlah_anggaran').val(dataEdit.jumlah_anggaran);
+            $('#myForm').attr('action','/admin/update_jenis_anggaran');
+        })
 
-        $('.table-user tbody').on('click', 'tr td a.terima', function() {
-            let id = $(this).data('id');
-            console.log(id);
-            Swal.fire({
-                title: 'Apakah yakin?'
-                , text: "data akan tersimpan!"
-                , type: 'warning'
-                , showCancelButton: true
-                , confirmButtonColor: '#3085d6'
-                , cancelButtonColor: '#d33'
-                , confirmButtonText: 'Ya, Konfirmasi'
-            }).then((result) => {
-                if (result.value) {
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                        , url: '/bendahara/terima_pengajuan'
-                        , method: 'post'
-                        , dataType: 'json'
-                        , data: {
-                            id: id
-                        }
-                        , success: function(data) {
-                            if (data == 1) {
-                                Swal.fire('Berhasil', 'Data akan terupdate', 'success').then((result) => {
-                                    location.reload();
-                                });
-                            }
-                        }
-                    })
-                }
-            })
+        $('#btn-tambah').on('click',function(){
+            $('#myForm').attr('action','/admin/create_jenis_anggaran');
         });
 
-        $('.table-user tbody').on('click', 'tr td a.tolak', function() {
-            let id = $(this).data('id');
+        $('.table-user tbody').on('click', 'tr td .hapus', function() {
+            let id_anggaran = $(this).data('id_hapus');
             Swal.fire({
                 title: 'Apakah yakin?'
-                , text: "data akan tersimpan!"
+                , text: "Data tidak bisa kembali lagi!"
                 , type: 'warning'
                 , showCancelButton: true
                 , confirmButtonColor: '#3085d6'
@@ -156,15 +138,15 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
-                        , url: '/bendahara/tolak_pengajuan'
+                        , url: '/admin/delete_jenis_anggaran'
                         , method: 'post'
                         , dataType: 'json'
                         , data: {
-                            id: id
+                            id: id_anggaran
                         }
                         , success: function(data) {
                             if (data == 1) {
-                                Swal.fire('Berhasil', 'Data akan terupdate', 'success').then((result) => {
+                                Swal.fire('Berhasil', 'Data telah terhapus', 'success').then((result) => {
                                     location.reload();
                                 });
                             }
@@ -180,7 +162,7 @@
 
     });
 
-    $('#liAnggaranTerpakai').addClass('active');
+    $('#liSisaAnggaran').addClass('active');
 
 </script>
 @endsection

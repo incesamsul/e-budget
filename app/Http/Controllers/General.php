@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\JenisAnggaran;
+use App\Models\Pengajuan;
 use App\Models\User;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Filesystem\Filesystem;
 
@@ -21,6 +23,34 @@ class General extends Controller
     public function dashboard()
     {
         return view('pages.dashboard.index');
+    }
+
+    public function sisaAnggaran()
+    {
+        $data['jenis_anggaran'] = JenisAnggaran::all();
+        return view('pages.sisa_anggaran.index', $data);
+    }
+
+    public function cetakLaporansisaAnggaran()
+    {
+
+        $data['jenis_anggaran'] = JenisAnggaran::all();
+        $html = view('pages.cetak.laporan_sisa_anggaran', $data);
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('Legal', 'potrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
+        exit(0);
     }
 
     public function profile()
