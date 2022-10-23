@@ -13,6 +13,12 @@ use PhpParser\Node\Expr\FuncCall;
 use function PHPUnit\Framework\isNull;
 
 
+
+function getJumlahPerStatus($status)
+{
+    return Pengajuan::where('status_verifikasi', $status)->get();
+}
+
 function getAnggaranTerpakai($idJenisAnggaran)
 {
     return Pengajuan::where('id_jenis_anggaran', $idJenisAnggaran)->get()->sum('jumlah_anggaran');
