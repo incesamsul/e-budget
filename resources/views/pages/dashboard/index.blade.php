@@ -81,10 +81,12 @@
                 </div>
                 <div class="card-body">
                     <canvas id="myChart3" width="1700" height="700"></canvas>
+                    <canvas id="chart7hariterakhir" width="1700" height="700"></canvas>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <?php
@@ -217,7 +219,73 @@ var ctx = document.getElementById('myChart3');
         }
         }
     },
+
     });
+
+
+
+    var date = new Date();
+
+            let hari1YangLalu = date.setDate(date.getDate() - 1);
+            let hari2YangLalu = date.setDate(date.getDate() - 1);
+            let hari3YangLalu = date.setDate(date.getDate() - 1);
+            let hari4YangLalu = date.setDate(date.getDate() - 1);
+            let hari5YangLalu = date.setDate(date.getDate() - 1);
+            let hari6YangLalu = date.setDate(date.getDate() - 1);
+            let hari7YangLalu = date.setDate(date.getDate() - 1);
+            const datapengajuan = {
+            labels: [new Date(hari7YangLalu).toISOString().slice(0, 10),new Date(hari6YangLalu).toISOString().slice(0, 10),new Date(hari5YangLalu).toISOString().slice(0, 10),new Date(hari4YangLalu).toISOString().slice(0, 10),new Date(hari3YangLalu).toISOString().slice(0, 10),new Date(hari2YangLalu).toISOString().slice(0, 10),new Date(hari1YangLalu).toISOString().slice(0, 10), new Date().toISOString().slice(0, 10) ],
+            datasets: [
+            {
+            label: 'jumlah pengajuan masuk perhari',
+            data: [{{ $pengajuan7HariYangLalu }}, {{ $pengajuan6HariYangLalu }}, {{ $pengajuan5HariYangLalu }}, {{ $pengajuan4HariYangLalu }}, {{ $pengajuan3HariYangLalu }}, {{ $pengajuan2HariYangLalu }}, {{ $pengajuan1HariYangLalu }}, {{ $pengajuanHariIni }}],
+            fill: false,
+            borderColor: '#44c',
+            backgroundColor: '#2C56E1',
+            }
+            ]
+            };
+            var ctx = document.getElementById('chart7hariterakhir');
+            var myChart = new Chart(ctx, {
+            type: 'line',
+            data: datapengajuan,
+            options: {
+            responsive: true,
+            scales: {
+            x: {
+                display: true,
+                title: {
+                display: true,
+                // text: 'Month',
+                color: '#911',
+                font: {
+                    family: 'Comic Sans MS',
+                    size: 20,
+                    weight: 'bold',
+                    lineHeight: 1.2,
+                },
+                padding: {top: 20, left: 0, right: 0, bottom: 0}
+                }
+            },
+            y: {
+                display: true,
+                title: {
+                display: true,
+                text: 'Value',
+                color: '#191',
+                font: {
+                    family: 'Times',
+                    size: 20,
+                    style: 'normal',
+                    lineHeight: 1.2
+                },
+                padding: {top: 30, left: 0, right: 0, bottom: 0}
+                }
+            }
+            }
+            },
+            });
+
 
 
 
