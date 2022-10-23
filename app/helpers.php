@@ -13,6 +13,11 @@ use PhpParser\Node\Expr\FuncCall;
 use function PHPUnit\Framework\isNull;
 
 
+function getAllPengajuan()
+{
+    return Pengajuan::all();
+}
+
 
 function getJumlahPerStatus($status)
 {
